@@ -11,11 +11,21 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private LayerMask jumpableGround;
 
+    
+    
+    //Movement
     private float dirX = 0f;
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private float jumpForce = 14f;
 
+    //Double Jump 
+    [SerializeField] bool canDoubleJump;
+    bool doubleJump;
+
+    //Animm
     private enum MovementState { idle, running, jumping, falling }
+
+
 
     [SerializeField] private AudioSource jumpSoundEffect;
 
@@ -34,10 +44,22 @@ public class PlayerMovement : MonoBehaviour
         dirX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (Input.GetButtonDown("Jump"))
         {
+            if (IsGrounded())
+            {
+                doubleJump = true;
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
+            else if (canDoubleJump && doubleJump)
+            {
+                doubleJump = 
+                    false;
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            }
+
             //jumpSoundEffect.Play();
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+           
         }
 
         UpdateAnimationState();
@@ -76,6 +98,6 @@ public class PlayerMovement : MonoBehaviour
 
     private bool IsGrounded()
     {
-        return true;// Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
+        return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
     }
 }

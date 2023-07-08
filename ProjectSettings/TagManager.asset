@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - jumpableGround
+  - Trap
   layers:
   - Default
   - TransparentFX
@@ -12,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Terrain
   - 
   - 
   - 
@@ -45,8 +46,14 @@ TagManager:
   - name: Background
     uniqueID: 3302296533
     locked: 0
+  - name: Props
+    uniqueID: 1594592383
+    locked: 0
   - name: Terrain
     uniqueID: 2131139429
+    locked: 0
+  - name: Trap
+    uniqueID: 3431281909
     locked: 0
   - name: Player
     uniqueID: 713975043
