@@ -3303,6 +3303,9 @@ MonoBehaviour:
   jumpForce: 14
   canDoubleJump: 1
   jumpSoundEffect: {fileID: 0}
+  dashingPower: 24
+  dashingCoolDown: 1
+  dashingTime: 0.15
 --- !u!114 &884294706
 MonoBehaviour:
   m_ObjectHideFlags: 0

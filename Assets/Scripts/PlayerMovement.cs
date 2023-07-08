@@ -29,6 +29,13 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private AudioSource jumpSoundEffect;
 
+    //Dash
+    private bool canDash = true;
+    private bool isDashing;
+    [SerializeField] private float dashingPower =64f;
+    [SerializeField] private float dashingCoolDown = 1f;
+    [SerializeField] private float dashingTime = 0.2f;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -41,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        if (isDashing) return;
         dirX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
@@ -53,14 +61,19 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (canDoubleJump && doubleJump)
             {
-                doubleJump = 
-                    false;
+                doubleJump = false;
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             }
 
             //jumpSoundEffect.Play();
            
         }
+
+        if(Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+
 
         UpdateAnimationState();
     }
@@ -99,5 +112,19 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         return Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, Vector2.down, .1f, jumpableGround);
+    }
+
+    private IEnumerator Dash()
+    {
+        canDash = false;
+        isDashing = true;
+        float originalGravity = rb.gravityScale;
+        rb.gravityScale= 0f;
+        rb.velocity = new Vector2(dirX * dashingPower, 0f);
+        yield return new WaitForSeconds(dashingTime);
+        rb.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashingCoolDown);
+        canDash = true;
     }
 }
