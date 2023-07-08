@@ -36,6 +36,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float dashingCoolDown = 1f;
     [SerializeField] private float dashingTime = 0.2f;
 
+    //Gliding 
+    [SerializeField] private bool canGlide;
+    [SerializeField] private bool isGliding = false;
+    [SerializeField] float glidingSpeed;
+    private float initGravityScale;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -43,15 +49,30 @@ public class PlayerMovement : MonoBehaviour
         coll = GetComponent<BoxCollider2D>();
         sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        this.initGravityScale = rb.gravityScale; 
     }
 
     // Update is called once per frame
     private void Update()
     {
         if (isDashing) return;
+
+
         dirX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(dirX * moveSpeed, rb.velocity.y);
 
+        
+        if(!IsGrounded() && isGliding && rb.velocity.y < 0.1f)
+        {
+            rb.gravityScale = 0f;
+            rb.velocity = new Vector2 (rb.velocity.x, -glidingSpeed);
+        } else
+        {
+            rb.gravityScale = initGravityScale;
+        }
+
+        //Jump
         if (Input.GetButtonDown("Jump"))
         {
             if (IsGrounded())
@@ -66,13 +87,24 @@ public class PlayerMovement : MonoBehaviour
             }
 
             //jumpSoundEffect.Play();
-           
+        }
+        
+        //Gliding 
+        if (Input.GetKeyDown(KeyCode.F) && canGlide)
+        {
+            isGliding = !isGliding;
+        }
+        if (IsGrounded())
+        {
+            isGliding = false;
         }
 
+        //Dash
         if(Input.GetKeyDown(KeyCode.LeftShift) && canDash)
         {
             StartCoroutine(Dash());
         }
+
 
 
         UpdateAnimationState();

@@ -3141,6 +3141,7 @@ GameObject:
   - component: {fileID: 884294700}
   - component: {fileID: 884294703}
   - component: {fileID: 884294704}
+  - component: {fileID: 884294707}
   - component: {fileID: 884294705}
   - component: {fileID: 884294706}
   m_Layer: 0
@@ -3306,6 +3307,9 @@ MonoBehaviour:
   dashingPower: 24
   dashingCoolDown: 1
   dashingTime: 0.15
+  canGlide: 1
+  isGliding: 0
+  glidingSpeed: 1
 --- !u!114 &884294706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3319,6 +3323,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathSoundEffect: {fileID: 0}
+--- !u!114 &884294707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 884294699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69b7644bbc835f143898ee9a9846b2e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  velocity: {x: 0, y: 1}
 --- !u!1 &1123069875
 GameObject:
   m_ObjectHideFlags: 0
